@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { Box } from '@chakra-ui/react';
 import WordleGrid from './WordleGrid';
+
+import {
+    LetterStateMap,
+    WordleActionType,
+    WordleConfig,
+    wordleReducer,
+} from '../wordle';
+
 import KeyboardWrapper from './KeyboardWrapper';
-import Wordle, { LetterStateMap, WordleConfig } from '../wordle';
+
+const config: WordleConfig = {
+    maxGuesses: 5,
+    wordLength: 5,
+    wordSource: { getWord: () => 'omari' },
+};
 
 const WordleGame: React.FC = () => {
-    const config: WordleConfig = {
-        maxGuesses: 5,
-        wordLength: 5,
-        wordSource: { getWord: () => 'omari' },
-    };
-    const [game, setGame] = useState(new Wordle(config));
-
-    game.guessWord('omaid');
+    const [gameState, gameDispatch] = useReducer(wordleReducer, {
+        config,
+        guesses: [],
+        currentGuess: [],
+        guessedLetters: [],
+        word: config.wordSource.getWord(),
+    });
 
     const usedLetters: LetterStateMap<string[]> = {
         empty: [],
@@ -21,29 +33,27 @@ const WordleGame: React.FC = () => {
         correct: [],
     };
 
-    game.guessedLetters.forEach((l) => {
-        //TODO: Maybe make this tuple code cleaner, find a better way to store letter and position
-        usedLetters[game.letterState(...l)].push(l[0]);
-    });
+    //gameDispatch({ type: WordleActionType.AddLetter, payload: 'b' });
 
     const onKeyPress = (button: string) => {
+        console.log(button);
         switch (button) {
             case '{bksp}':
-                setGame((g) => g.removeLetter());
-
                 break;
             case '{enter}':
-                setGame((g) => g.submitGuess());
-
+                gameDispatch({ type: WordleActionType.Guess, payload: null });
                 break;
             default:
-                setGame((g) => g.addLetter(button));
+                gameDispatch({
+                    type: WordleActionType.AddLetter,
+                    payload: button,
+                });
         }
     };
 
     return (
         <Box>
-            <WordleGrid game={game} />
+            <WordleGrid game={gameState} />
             <KeyboardWrapper
                 usedLetters={usedLetters}
                 onKeyPress={onKeyPress}

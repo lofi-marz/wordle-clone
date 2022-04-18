@@ -1,6 +1,6 @@
 import React from 'react';
 import { Center, SimpleGrid } from '@chakra-ui/react';
-import Wordle, { LetterState, LetterStateMap } from '../wordle';
+import Wordle, { letterScore, LetterState, LetterStateMap } from '../wordle';
 
 interface WordleCellProps {
     state: LetterState;
@@ -30,13 +30,12 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
     console.log('Grid re-render');
     const toBoardRow = (guess: string) => {
         const cells = [];
-        const guessState = game.guessState(guess);
         for (let i = 0; i < guess.length; i++) {
             //TODO: This key isn't unique
             cells.push(
                 <WordleCell
                     key={guess[i]}
-                    state={guessState[i]}
+                    state={letterScore(game.word, guess[i], i)}
                     letter={guess[i]}
                 />
             );
