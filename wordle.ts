@@ -1,11 +1,9 @@
-export interface WordleConfig {
-    wordLength: number;
-    maxGuesses: number;
-    wordSource: WordFactory;
-}
+import validWordList from './words.json';
 
-export interface WordFactory {
-    getWord: () => string;
+export interface WordleConfig {
+    maxGuesses: number;
+    allowAnything: boolean;
+    word: string;
 }
 
 export type LetterState = 'empty' | 'absent' | 'present' | 'correct';
@@ -32,7 +30,7 @@ export function wordleReducer(state: Wordle, action: WordleAction): Wordle {
 }
 
 function addLetter(state: Wordle, letter: string): Wordle {
-    if (state.currentGuess.length >= state.config.wordLength) return state;
+    if (state.currentGuess.length >= state.word.length) return state;
     const newGuess = state.currentGuess + letter;
 
     return { ...state, currentGuess: newGuess };
@@ -44,10 +42,26 @@ function removeLetter(state: Wordle): Wordle {
     return { ...state, currentGuess: state.currentGuess.slice(0, -1) };
 }
 
+function isWordValid(allowAnything: boolean, word: string) {
+    if (allowAnything) return true;
+
+    return validWordList.includes(word);
+}
+
 function submitGuess(state: Wordle): Wordle {
     const guess = state.currentGuess;
-    if (guess.length < state.config.wordLength) {
+    const { allowAnything } = state.config;
+
+    if (guess.length < state.word.length) {
         console.log('Word unfinished');
+        return state;
+    }
+
+    if (
+        !isWordValid(allowAnything, guess.toLocaleLowerCase()) &&
+        guess != state.word
+    ) {
+        console.log('Word invalid');
         return state;
     }
 
@@ -71,6 +85,7 @@ export function letterScore(
     letter: string,
     pos: number
 ): LetterState {
+    console.log(`${letter} ${correctWord[pos]} ${pos}`);
     if (letter == correctWord[pos]) {
         return 'correct';
     } else if (correctWord.includes(letter)) {
@@ -78,15 +93,6 @@ export function letterScore(
     } else {
         return 'absent';
     }
-}
-
-function guessScore(guess: string, correctWord: string): LetterState[] {
-    const states: LetterState[] = [];
-    for (let i = 0; i < guess.length; i++) {
-        const letter = guess[i];
-        states.push(letterScore(correctWord, letter, i));
-    }
-    return states;
 }
 
 export type LetterStateMap<T> = {

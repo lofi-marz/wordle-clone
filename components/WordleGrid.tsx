@@ -6,9 +6,16 @@ import classNames from 'classnames';
 interface WordleCellProps {
     state: LetterState;
     letter: string | null;
+    lastTyped?: boolean;
+    column?: number;
 }
 
-const WordleCell: React.FC<WordleCellProps> = ({ state, letter }) => {
+const WordleCell: React.FC<WordleCellProps> = ({
+    state,
+    letter,
+    lastTyped,
+    column,
+}) => {
     const colours: LetterStateMap<string> = {
         absent: 'bg-red-500',
         correct: 'bg-green-500',
@@ -21,8 +28,14 @@ const WordleCell: React.FC<WordleCellProps> = ({ state, letter }) => {
     return (
         <span
             className={classNames(
-                'flex aspect-square w-full items-center justify-center rounded border border-slate-300 align-middle text-3xl',
-                cellColour
+                'flex aspect-square w-full items-center justify-center rounded border border-slate-300 align-middle text-3xl transition-all duration-300 ease-in-out dark:border-neutral-800 dark:text-white',
+                cellColour,
+                {
+                    'animate-biggle': lastTyped,
+                    'animate-flip': state != 'empty',
+                    [`animation-delay-${column ? column * 100 : 'none'}`]:
+                        column && state != 'empty',
+                }
             )}>
             {letter ?? ' '}
         </span>
@@ -34,13 +47,13 @@ interface WordleGridProps {
 }
 
 const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
-    const toBoardRow = (guess: string) => {
+    const toBoardRow = (guess: string, row: number) => {
         const cells = [];
         for (let i = 0; i < guess.length; i++) {
-            //TODO: This key isn't unique
             cells.push(
                 <WordleCell
-                    key={guess[i]}
+                    key={`${row}-${i}-${guess[i]}`}
+                    column={i}
                     state={letterScore(game.word, guess[i], i)}
                     letter={guess[i]}
                 />
@@ -51,13 +64,21 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
 
     const buildBoard = () => {
         const cells = [];
-        cells.push(game.guesses.map(toBoardRow));
+        for (let i = 0; i < game.guesses.length; i++) {
+            const guess = game.guesses[i];
+            cells.push(toBoardRow(guess, i));
+        }
         const currentGuessCells: JSX.Element[] = [];
 
         for (let i = 0; i < game.currentGuess.length; i++) {
             const l = game.currentGuess[i];
             currentGuessCells.push(
-                <WordleCell key={l} state="empty" letter={l} />
+                <WordleCell
+                    key={`${i}-${l}`}
+                    lastTyped={i == game.currentGuess.length - 1}
+                    state="empty"
+                    letter={l}
+                />
             );
         }
 
@@ -65,7 +86,7 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
         //Fill the remaining space with empty cells
         const emptySpaces =
             (game.config.maxGuesses - game.guesses.length + 1) *
-                game.config.wordLength -
+                game.word.length -
             game.currentGuess.length;
         for (let i = 0; i < emptySpaces; i++) {
             cells.push(

@@ -3,20 +3,19 @@ import WordleGrid from './WordleGrid';
 
 import { LetterState, WordleConfig, wordleReducer } from '../wordle';
 import KeyboardWrapper from './KeyboardWrapper';
+import NavBar from './NavBar';
 
-const config: WordleConfig = {
-    maxGuesses: 5,
-    wordLength: 5,
-    wordSource: { getWord: () => 'omari' },
-};
+interface WordleGameProps {
+    config: WordleConfig;
+}
 
-const WordleGame: React.FC = () => {
+const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
     const [gameState, gameDispatch] = useReducer(wordleReducer, {
         config,
         guesses: [],
         currentGuess: '',
         guessedLetters: new Map<string, LetterState>(),
-        word: config.wordSource.getWord(),
+        word: config.word.toLocaleUpperCase(),
     });
 
     const groupLetters = (guessedLetters: Map<string, LetterState>) => {
@@ -47,7 +46,8 @@ const WordleGame: React.FC = () => {
     };
 
     return (
-        <div className="flex h-full flex-col content-between items-center">
+        <div className="flex h-full flex-col content-between items-center dark:bg-neutral-900 ">
+            <NavBar />
             <div className="flex w-1/2 grow place-content-center place-items-center">
                 <WordleGrid game={gameState} />
             </div>

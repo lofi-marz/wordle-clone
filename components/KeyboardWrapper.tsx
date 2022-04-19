@@ -14,18 +14,24 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
     onChange,
     usedLetters,
 }) => {
-    console.log(usedLetters);
-
     const buttonTheme = [];
+    let leftovers = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z';
 
     for (const [state, letters] of usedLetters) {
         if (letters.length == 0) continue;
+        letters.forEach((l) => (leftovers = leftovers.replace(l, '')));
         buttonTheme.push({
             class: `wordle-state-${state}`,
             buttons: letters.join(' '),
         });
     }
 
+    console.log(buttonTheme);
+
+    buttonTheme.push({
+        class: 'wordle-state-empty',
+        buttons: `${leftovers} {bksp} {enter}`,
+    });
     return (
         <Keyboard
             buttonTheme={buttonTheme}
@@ -36,9 +42,9 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
             useMouseEvents={false}
             layout={{
                 default: [
-                    'q w e r t y u i o p',
-                    'a s d f g h j k l',
-                    '{enter} z x c v b n m {bksp}',
+                    'Q W E R T Y U I O P',
+                    'A S D F G H J K L',
+                    '{enter} Z X C V B N M {bksp}',
                 ],
             }}
         />
