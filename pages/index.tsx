@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 
 import 'react-simple-keyboard/build/css/index.css';
-import WordleGame from '../components/WordleGame';
+import KeyboardTest from '../components/KeyboardTest';
 
 const Home: NextPage = () => {
     return (
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
             </Head>
 
             <main className={styles.main}>
-                <WordleGame />
+                <KeyboardTest />
             </main>
 
             <footer className={styles.footer}>

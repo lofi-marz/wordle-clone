@@ -44,31 +44,37 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
     };
 
     const buildBoard = () => {
-        const rows = [];
-        rows.push(game.guesses.map(toBoardRow));
+        const cells = [];
+        cells.push(game.guesses.map(toBoardRow));
         const currentGuessCells: JSX.Element[] = [];
-        game.currentGuess.forEach((l) => {
+
+        for (let i = 0; i < game.currentGuess.length; i++) {
+            const l = game.currentGuess[i];
             currentGuessCells.push(
-                <WordleCell key={l} state={'empty'} letter={l} />
+                <WordleCell key={l} state="empty" letter={l} />
             );
-        });
-        rows.push(currentGuessCells);
+        }
+
+        cells.push(currentGuessCells);
+        //Fill the remaining space with empty cells
         const emptySpaces =
             (game.config.maxGuesses - game.guesses.length + 1) *
                 game.config.wordLength -
             game.currentGuess.length;
         for (let i = 0; i < emptySpaces; i++) {
-            rows.push(
+            cells.push(
                 <WordleCell key={`empty-${i}`} state="empty" letter={null} />
             );
         }
         return (
-            <SimpleGrid
-                columns={game.config.wordLength}
-                width="fit-content"
-                spacing={1}>
-                {rows}
-            </SimpleGrid>
+            <Center>
+                <SimpleGrid
+                    columns={game.config.wordLength}
+                    width="fit-content"
+                    spacing={1}>
+                    {cells}
+                </SimpleGrid>
+            </Center>
         );
     };
 

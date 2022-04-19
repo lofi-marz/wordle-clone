@@ -1,29 +1,34 @@
-import React from 'react';
-import Keyboard from 'react-simple-keyboard';
-import { LetterStateMap } from '../wordle';
+import React, { useRef } from 'react';
+import { LetterState } from '../wordle';
 import { chakra } from '@chakra-ui/react';
+import Keyboard from 'react-simple-keyboard';
 
 interface KeyboardWrapperProps {
-    //Grouped by state
-    usedLetters: LetterStateMap<string[]>;
     onKeyPress: (button: string) => void;
+    usedLetters: Map<LetterState, string[]>;
     onChange?: (input: string) => void;
 }
 
 const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
-    usedLetters,
     onKeyPress,
     onChange,
+    usedLetters,
 }) => {
-    const buttonTheme = Object.entries(usedLetters)
-        .filter(([_, letters]) => letters.length > 0)
-        .map(([state, letters]) => {
-            return {
-                class: `wordle-letter-${state}`,
-                buttons: letters.join(' '),
-            };
-        });
+    console.log(usedLetters);
 
+    const keyboard = useRef();
+
+    const buttonTheme = [];
+
+    for (const [state, letters] of usedLetters) {
+        if (letters.length == 0) continue;
+        buttonTheme.push({
+            class: `wordle-letter-${state}`,
+            buttons: letters.join(' '),
+        });
+    }
+
+    //TODO: This breaks everything
     const ChakraKeyboard = chakra(Keyboard, {
         baseStyle: {
             bg: 'red.500',
@@ -36,6 +41,8 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
             onKeyPress={onKeyPress}
             onChange={onChange}
             layoutName="default"
+            syncInstanceInputs={true}
+            useMouseEvents={false}
             layout={{
                 default: [
                     'q w e r t y u i o p',

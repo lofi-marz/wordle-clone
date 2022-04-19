@@ -1,14 +1,8 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import WordleGrid from './WordleGrid';
 
-import {
-    LetterStateMap,
-    WordleActionType,
-    WordleConfig,
-    wordleReducer,
-} from '../wordle';
-
+import { LetterState, WordleConfig, wordleReducer } from '../wordle';
 import KeyboardWrapper from './KeyboardWrapper';
 
 const config: WordleConfig = {
@@ -21,41 +15,47 @@ const WordleGame: React.FC = () => {
     const [gameState, gameDispatch] = useReducer(wordleReducer, {
         config,
         guesses: [],
-        currentGuess: [],
-        guessedLetters: [],
+        currentGuess: '',
+        guessedLetters: new Map<string, LetterState>(),
         word: config.wordSource.getWord(),
     });
 
-    const usedLetters: LetterStateMap<string[]> = {
-        empty: [],
-        absent: [],
-        present: [],
-        correct: [],
+    const [button, setButton] = useState('');
+
+    const groupLetters = (guessedLetters: Map<string, LetterState>) => {
+        console.log(guessedLetters);
+        const letterStates = new Map<LetterState, string[]>();
+        for (const [letter, state] of guessedLetters) {
+            const oldState = letterStates.get(state) ?? [];
+            letterStates.set(state, [...oldState, letter]);
+        }
+        console.log(letterStates);
+        return letterStates;
     };
 
-    //gameDispatch({ type: WordleActionType.AddLetter, payload: 'b' });
-
     const onKeyPress = (button: string) => {
-        console.log(button);
         switch (button) {
             case '{bksp}':
+                gameDispatch({ type: 'removeLetter' });
                 break;
             case '{enter}':
-                gameDispatch({ type: WordleActionType.Guess, payload: null });
+                gameDispatch({ type: 'guess' });
                 break;
             default:
-                gameDispatch({
-                    type: WordleActionType.AddLetter,
+                setButton(button);
+            /*gameDispatch({
+                    type: 'addLetter',
                     payload: button,
-                });
+                });*/
         }
     };
 
     return (
         <Box>
             <WordleGrid game={gameState} />
+
             <KeyboardWrapper
-                usedLetters={usedLetters}
+                usedLetters={groupLetters(gameState.guessedLetters)}
                 onKeyPress={onKeyPress}
             />
         </Box>
