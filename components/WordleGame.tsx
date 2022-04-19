@@ -1,5 +1,4 @@
-import React, { useReducer, useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import React, { useReducer } from 'react';
 import WordleGrid from './WordleGrid';
 
 import { LetterState, WordleConfig, wordleReducer } from '../wordle';
@@ -19,8 +18,6 @@ const WordleGame: React.FC = () => {
         guessedLetters: new Map<string, LetterState>(),
         word: config.wordSource.getWord(),
     });
-
-    const [button, setButton] = useState('');
 
     const groupLetters = (guessedLetters: Map<string, LetterState>) => {
         console.log(guessedLetters);
@@ -42,23 +39,24 @@ const WordleGame: React.FC = () => {
                 gameDispatch({ type: 'guess' });
                 break;
             default:
-                setButton(button);
-            /*gameDispatch({
+                gameDispatch({
                     type: 'addLetter',
                     payload: button,
-                });*/
+                });
         }
     };
 
     return (
-        <Box>
-            <WordleGrid game={gameState} />
+        <div className="flex h-full flex-col content-between items-center">
+            <div className="flex w-1/2 grow place-content-center place-items-center">
+                <WordleGrid game={gameState} />
+            </div>
 
             <KeyboardWrapper
                 usedLetters={groupLetters(gameState.guessedLetters)}
                 onKeyPress={onKeyPress}
             />
-        </Box>
+        </div>
     );
 };
 

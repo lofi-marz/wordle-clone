@@ -1,16 +1,20 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.wordle-state-correct {
+    @apply bg-green-500 !important
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.wordle-state-present {
+    @apply bg-yellow-500 !important
 }
 
-* {
-  box-sizing: border-box;
+.wordle-state-absent {
+    @apply bg-red-500 !important
+}
+
+.react-simple-keyboard {
+    @apply justify-self-end w-1/2 h-fit !important
+
 }

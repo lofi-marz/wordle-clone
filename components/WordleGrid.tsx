@@ -1,6 +1,7 @@
 import React from 'react';
-import { Center, SimpleGrid } from '@chakra-ui/react';
+
 import Wordle, { letterScore, LetterState, LetterStateMap } from '../wordle';
+import classNames from 'classnames';
 
 interface WordleCellProps {
     state: LetterState;
@@ -9,16 +10,22 @@ interface WordleCellProps {
 
 const WordleCell: React.FC<WordleCellProps> = ({ state, letter }) => {
     const colours: LetterStateMap<string> = {
-        absent: 'red.500',
-        correct: 'green.500',
-        present: 'yellow.500',
-        empty: 'gray.500',
+        absent: 'bg-red-500',
+        correct: 'bg-green-500',
+        present: 'bg-yellow-500',
+        empty: '',
     };
 
+    const cellColour = colours[state];
+
     return (
-        <Center w="50px" h="50px" bg={colours[state]}>
+        <span
+            className={classNames(
+                'flex aspect-square w-full items-center justify-center rounded border border-slate-300 align-middle text-3xl',
+                cellColour
+            )}>
             {letter ?? ' '}
-        </Center>
+        </span>
     );
 };
 
@@ -27,7 +34,6 @@ interface WordleGridProps {
 }
 
 const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
-    console.log('Grid re-render');
     const toBoardRow = (guess: string) => {
         const cells = [];
         for (let i = 0; i < guess.length; i++) {
@@ -66,16 +72,7 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
                 <WordleCell key={`empty-${i}`} state="empty" letter={null} />
             );
         }
-        return (
-            <Center>
-                <SimpleGrid
-                    columns={game.config.wordLength}
-                    width="fit-content"
-                    spacing={1}>
-                    {cells}
-                </SimpleGrid>
-            </Center>
-        );
+        return <div className="grid w-full grid-cols-5 gap-1">{cells}</div>;
     };
 
     return buildBoard();

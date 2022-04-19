@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { LetterState } from '../wordle';
-import { chakra } from '@chakra-ui/react';
 import Keyboard from 'react-simple-keyboard';
+import 'react-simple-keyboard/build/css/index.css';
 
 interface KeyboardWrapperProps {
     onKeyPress: (button: string) => void;
@@ -16,27 +16,18 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
 }) => {
     console.log(usedLetters);
 
-    const keyboard = useRef();
-
     const buttonTheme = [];
 
     for (const [state, letters] of usedLetters) {
         if (letters.length == 0) continue;
         buttonTheme.push({
-            class: `wordle-letter-${state}`,
+            class: `wordle-state-${state}`,
             buttons: letters.join(' '),
         });
     }
 
-    //TODO: This breaks everything
-    const ChakraKeyboard = chakra(Keyboard, {
-        baseStyle: {
-            bg: 'red.500',
-        },
-    });
-
     return (
-        <ChakraKeyboard
+        <Keyboard
             buttonTheme={buttonTheme}
             onKeyPress={onKeyPress}
             onChange={onChange}
