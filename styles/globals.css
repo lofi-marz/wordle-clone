@@ -5,8 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .wordle-state-empty {
-    @apply bg-neutral-50 dark:bg-neutral-800 !important
+    @apply bg-neutral-50 dark:bg-dark-accent !important
 }
 
 .wordle-state-correct {
@@ -21,12 +22,21 @@
     @apply bg-red-500 !important
 }
 
+
+.hg-rows {
+    @apply h-full flex flex-col
+}
+
+.hg-row {
+    @apply h-full !important
+}
+
 .hg-button {
-    @apply border-0 !important
+    @apply border-0 h-full !important
 }
 
 
 .react-simple-keyboard {
-    @apply justify-self-end w-1/2 h-fit dark:bg-neutral-900 dark:text-white !important
+    @apply justify-self-end w-full dark:bg-neutral-900 dark:text-white h-56 !important
 
 }

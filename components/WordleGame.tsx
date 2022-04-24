@@ -3,7 +3,6 @@ import WordleGrid from './WordleGrid';
 
 import { LetterState, WordleConfig, wordleReducer } from '../wordle';
 import KeyboardWrapper from './KeyboardWrapper';
-import NavBar from './NavBar';
 
 interface WordleGameProps {
     config: WordleConfig;
@@ -46,9 +45,8 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
     };
 
     return (
-        <div className="flex h-full flex-col content-between items-center dark:bg-neutral-900 ">
-            <NavBar />
-            <div className="flex w-1/2 grow place-content-center place-items-center">
+        <div className="flex h-full flex-col content-between items-center">
+            <div className="flex w-4/5 grow place-content-center place-items-center">
                 <WordleGrid game={gameState} />
             </div>
 

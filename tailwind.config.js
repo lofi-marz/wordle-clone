@@ -1,14 +1,19 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const colors = require('tailwindcss/colors');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
     darkMode: 'class',
     content: [
         './pages/**/*.{js,ts,jsx,tsx}',
         './components/**/*.{js,ts,jsx,tsx}',
-        './components/*.{js,ts,jsx,tsx}',
     ],
     theme: {
         extend: {
             fontFamily: {
                 logo: ['Poppins', 'sans-serif'],
+                sans: ['Poppins', ...defaultTheme.fontFamily.sans],
             },
             keyframes: {
                 wiggle: {
@@ -26,9 +31,11 @@ module.exports = {
                 biggle: 'biggle 0.5s ease-in-out 1',
                 flip: 'flip 0.5s ease-in-out',
             },
+            colors: {
+                'dark-primary': colors.neutral[900],
+                'dark-accent': colors.neutral[600],
+            },
         },
     },
-    plugins: [
-        require('tailwindcss-animation-delay'),
-    ],
+    plugins: [require('tailwindcss-animation-delay')],
 };

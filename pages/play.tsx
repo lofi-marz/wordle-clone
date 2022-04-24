@@ -3,6 +3,7 @@ import WordleGame from '../components/WordleGame';
 import { useRouter } from 'next/router';
 import { decodeWord } from '../word-encoder';
 import { WordleConfig } from '../wordle';
+import React from 'react';
 
 const PlayWordle: NextPage = () => {
     const router = useRouter();
@@ -24,11 +25,7 @@ const PlayWordle: NextPage = () => {
     };
 
     //TODO: Look at how to do a share page
-    return (
-        <main className="dark h-screen w-screen">
-            <WordleGame config={config} />
-        </main>
-    );
+    return <WordleGame config={config} />;
 };
 
 PlayWordle.getInitialProps = async ({ req }) => {

@@ -28,7 +28,7 @@ const WordleCell: React.FC<WordleCellProps> = ({
     return (
         <span
             className={classNames(
-                'flex aspect-square w-full items-center justify-center rounded border border-slate-300 align-middle text-3xl transition-all duration-300 ease-in-out dark:border-neutral-800 dark:text-white',
+                'flex aspect-square w-full items-center justify-center rounded border border-neutral-800 align-middle text-3xl font-extrabold transition-all duration-300 ease-in-out dark:border-dark-accent dark:text-white',
                 cellColour,
                 {
                     'animate-biggle': lastTyped,
