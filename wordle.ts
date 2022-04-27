@@ -1,10 +1,12 @@
 import validWordList from './words.json';
 
-export interface WordleConfig {
+export type WordleConfig = {
     maxGuesses: number;
     allowAnything: boolean;
-    word: string;
-}
+    word: Lowercase<string>;
+};
+
+export type Guess = Lowercase<string>;
 
 export type LetterState = 'empty' | 'absent' | 'present' | 'correct';
 
@@ -57,10 +59,7 @@ function submitGuess(state: Wordle): Wordle {
         return state;
     }
 
-    if (
-        !isWordValid(allowAnything, guess.toLocaleLowerCase()) &&
-        guess != state.word
-    ) {
+    if (!isWordValid(allowAnything, guess) && guess != state.word) {
         console.log('Word invalid');
         return state;
     }
@@ -102,7 +101,7 @@ export type LetterStateMap<T> = {
 export default interface Wordle {
     config: WordleConfig;
     guesses: string[];
-    currentGuess: string;
+    currentGuess: Lowercase<string>;
     guessedLetters: Map<string, LetterState>;
     word: string;
 }

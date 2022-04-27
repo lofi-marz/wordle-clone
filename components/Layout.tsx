@@ -12,7 +12,7 @@ export default function Layout({ children }: LayoutProps) {
 
     return (
         <div
-            className={classNames('dark dark:bg-dark-800 z-10 flex flex-col')}
+            className={classNames('dark dark:bg-dark-800 flex flex-col')}
             style={{ height: height ?? 0, width: width ?? 0 }}>
             <Head>
                 <title>Yourdle</title>
@@ -21,7 +21,7 @@ export default function Layout({ children }: LayoutProps) {
             </Head>
 
             <Navbar />
-            <main className="z-0 h-full w-full dark:bg-dark-primary dark:text-white">
+            <main className="z-0 flex h-full w-full justify-center align-middle dark:bg-dark-primary dark:text-white">
                 {children}
             </main>
         </div>

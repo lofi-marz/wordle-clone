@@ -93,7 +93,12 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
                 <WordleCell key={`empty-${i}`} state="empty" letter={null} />
             );
         }
-        return <div className="grid w-full grid-cols-5 gap-1">{cells}</div>;
+        return (
+            <div
+                className={`grid w-full grid-cols-${game.config.word.length} gap-1`}>
+                {cells}
+            </div>
+        );
     };
 
     return buildBoard();
