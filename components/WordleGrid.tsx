@@ -1,7 +1,7 @@
 import React from 'react';
-
 import Wordle, { letterScore, LetterState, LetterStateMap } from '../wordle';
 import classNames from 'classnames';
+import { motion, Variants } from 'framer-motion';
 
 interface WordleCellProps {
     state: LetterState;
@@ -23,22 +23,29 @@ const WordleCell: React.FC<WordleCellProps> = ({
         empty: '',
     };
 
-    const cellColour = colours[state];
+    const variants: Variants = {
+        lastTyped: { scale: [1, 1.1, 1], transition: { duration: 0.5 } },
+        notEmpty: {
+            scaleX: [1, 0, 1],
+            transition: { duration: 0.5, delay: (column ?? 0) * 0.2 },
+        },
+    };
 
+    const cellColour = colours[state];
+    let animate = '';
+
+    animate += lastTyped ? 'lastTyped' : '';
+    animate += state != 'empty' ? 'notEmpty' : '';
     return (
-        <span
+        <motion.span
             className={classNames(
-                'flex aspect-square w-full items-center justify-center rounded border border-neutral-800 align-middle text-3xl font-extrabold transition-all duration-300 ease-in-out dark:border-dark-accent dark:text-white',
-                cellColour,
-                {
-                    'animate-biggle': lastTyped,
-                    'animate-flip': state != 'empty',
-                    [`animation-delay-${column ? column * 100 : 'none'}`]:
-                        column && state != 'empty',
-                }
-            )}>
+                'flex aspect-square w-full items-center justify-center rounded border border-neutral-800 align-middle text-3xl font-extrabold dark:border-dark-accent dark:text-white',
+                cellColour
+            )}
+            animate={animate}
+            variants={variants}>
             {letter ?? ' '}
-        </span>
+        </motion.span>
     );
 };
 
@@ -93,9 +100,13 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
                 <WordleCell key={`empty-${i}`} state="empty" letter={null} />
             );
         }
+        //Tailwind doesn't support dynamic class names properly, using inline styles as a workaround
         return (
             <div
-                className={`grid w-full grid-cols-${game.config.word.length} gap-1`}>
+                style={{
+                    gridTemplateColumns: `repeat(${game.config.word.length}, minmax(0, 1fr))`,
+                }}
+                className="m-auto grid w-5/6 gap-1">
                 {cells}
             </div>
         );

@@ -49,7 +49,7 @@ const CreateWordle: NextPage = () => {
         const encodedConfig = generateConfigCode(watchAllFields);
         console.log(`Code: ${encodedConfig}`);
         //console.log(decodeConfigCode(encodedConfig));
-        setShareLink(`localhost:3000/play?code=${encodedConfig}`);
+        setShareLink(`/play?code=${encodedConfig}`);
     }, [watchAllFields]);
 
     return (

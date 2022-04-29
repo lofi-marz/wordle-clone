@@ -15,6 +15,7 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
     usedLetters,
 }) => {
     const buttonTheme = [];
+
     let leftovers = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z';
 
     for (const [state, letters] of usedLetters) {
@@ -25,8 +26,6 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
             buttons: letters.join(' '),
         });
     }
-
-    console.log(buttonTheme);
 
     buttonTheme.push({
         class: 'wordle-state-empty',
@@ -44,8 +43,12 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
                 default: [
                     'Q W E R T Y U I O P',
                     'A S D F G H J K L',
-                    '{enter} Z X C V B N M {bksp}',
+                    '{bksp} Z X C V B N M {enter}',
                 ],
+            }}
+            display={{
+                '{bksp}': '˿',
+                '{enter}': '⏎',
             }}
         />
     );

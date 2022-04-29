@@ -24,7 +24,6 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
             const oldState = letterStates.get(state) ?? [];
             letterStates.set(state, [...oldState, letter]);
         }
-        console.log(letterStates);
         return letterStates;
     };
 
@@ -45,11 +44,10 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
     };
 
     return (
-        <div className="flex h-full flex-col content-between items-center">
-            <div className="flex w-4/5 grow place-content-center place-items-center">
+        <div className="flex h-full w-full flex-col items-center justify-between overflow-hidden overflow-hidden md:w-2/3 md:max-w-screen-sm">
+            <div className="flex h-full w-full grow overflow-auto md:p-10">
                 <WordleGrid game={gameState} />
             </div>
-
             <KeyboardWrapper
                 usedLetters={groupLetters(gameState.guessedLetters)}
                 onKeyPress={onKeyPress}
