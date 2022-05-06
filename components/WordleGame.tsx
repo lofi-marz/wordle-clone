@@ -1,29 +1,44 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import WordleGrid from './WordleGrid';
 
-import { LetterState, WordleConfig, wordleReducer } from '../wordle';
+import Wordle, { LetterState, WordleConfig, wordleReducer } from '../wordle';
 import KeyboardWrapper from './KeyboardWrapper';
+import useLocalStorageSync from './useLocalStorageSync';
 
 interface WordleGameProps {
     config: WordleConfig;
 }
 
 const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
+    const [storedGameState, setStoredGameState] = useLocalStorageSync<Wordle>(
+        'gameState',
+        null
+    );
+
     const [gameState, gameDispatch] = useReducer(wordleReducer, {
         config,
         guesses: [],
         currentGuess: '',
         guessedLetters: new Map<string, LetterState>(),
-        word: config.word.toLocaleUpperCase(),
+        word: config.word,
     });
 
+    useEffect(() => {
+        if (storedGameState != null)
+            gameDispatch({ type: 'load', payload: storedGameState });
+    }, [storedGameState]);
+
     const groupLetters = (guessedLetters: Map<string, LetterState>) => {
-        console.log(guessedLetters);
         const letterStates = new Map<LetterState, string[]>();
-        for (const [letter, state] of guessedLetters) {
-            const oldState = letterStates.get(state) ?? [];
-            letterStates.set(state, [...oldState, letter]);
+        try {
+            for (const [letter, state] of guessedLetters) {
+                const oldState = letterStates.get(state) ?? [];
+                letterStates.set(state, [...oldState, letter]);
+            }
+        } catch (e) {
+            console.log(e);
         }
+
         return letterStates;
     };
 
@@ -34,6 +49,8 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
                 break;
             case '{enter}':
                 gameDispatch({ type: 'guess' });
+                //TODO: Only do this sometimes
+                setStoredGameState({ ...gameState, currentGuess: '' });
                 break;
             default:
                 gameDispatch({

@@ -10,16 +10,24 @@ export type Guess = Lowercase<string>;
 
 export type LetterState = 'empty' | 'absent' | 'present' | 'correct';
 
-export type WordleActionType = 'guess' | 'removeLetter' | 'addLetter';
+export type WordleActionType = 'load' | 'guess' | 'removeLetter' | 'addLetter';
 
-export interface WordleAction {
-    type: WordleActionType;
-    payload?: string;
-}
+export type WordleAction =
+    | {
+          type: WordleActionType;
+          payload?: string;
+      }
+    | { type: 'load'; payload: Wordle };
 
 export function wordleReducer(state: Wordle, action: WordleAction): Wordle {
     console.log({ state, action });
+
     switch (action.type) {
+        case 'load':
+            return {
+                ...(<Wordle>action.payload),
+                guessedLetters: new Map<string, LetterState>(),
+            };
         case 'addLetter':
             return addLetter(state, action.payload ?? ' ');
         case 'removeLetter':
@@ -84,7 +92,7 @@ export function letterScore(
     letter: string,
     pos: number
 ): LetterState {
-    console.log(`${letter} ${correctWord[pos]} ${pos}`);
+    //console.log(`${letter} ${correctWord[pos]} ${pos}`);
     if (letter == correctWord[pos]) {
         return 'correct';
     } else if (correctWord.includes(letter)) {
