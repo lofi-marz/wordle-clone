@@ -3,10 +3,8 @@ import validWordList from './words.json';
 export type WordleConfig = {
     maxGuesses: number;
     allowAnything: boolean;
-    word: Lowercase<string>;
+    word: string;
 };
-
-export type Guess = Lowercase<string>;
 
 export type LetterState = 'empty' | 'absent' | 'present' | 'correct';
 
@@ -29,7 +27,7 @@ export function wordleReducer(state: Wordle, action: WordleAction): Wordle {
                 guessedLetters: new Map<string, LetterState>(),
             };
         case 'addLetter':
-            return addLetter(state, action.payload ?? ' ');
+            return addLetter(state, action.payload?.toLocaleLowerCase() ?? ' ');
         case 'removeLetter':
             return removeLetter(state);
         case 'guess':
@@ -109,7 +107,7 @@ export type LetterStateMap<T> = {
 export default interface Wordle {
     config: WordleConfig;
     guesses: string[];
-    currentGuess: Lowercase<string>;
+    currentGuess: string;
     guessedLetters: Map<string, LetterState>;
     word: string;
 }

@@ -5,7 +5,7 @@ import { motion, Variants } from 'framer-motion';
 
 interface WordleCellProps {
     state: LetterState;
-    letter: string | null;
+    letter: Uppercase<string> | null;
     lastTyped?: boolean;
     column?: number;
 }
@@ -17,9 +17,9 @@ const WordleCell: React.FC<WordleCellProps> = ({
     column,
 }) => {
     const colours: LetterStateMap<string> = {
-        absent: 'bg-red-500',
-        correct: 'bg-green-500',
-        present: 'bg-yellow-500',
+        absent: 'red-500',
+        correct: 'green-500',
+        present: 'yellow-500',
         empty: '',
     };
 
@@ -36,15 +36,20 @@ const WordleCell: React.FC<WordleCellProps> = ({
 
     animate += lastTyped ? 'lastTyped' : '';
     animate += state != 'empty' ? 'notEmpty' : '';
+
     return (
         <motion.span
             className={classNames(
-                'flex aspect-square w-full items-center justify-center rounded border border-neutral-800 align-middle text-3xl font-extrabold dark:border-dark-accent dark:text-white',
-                cellColour
+                'flex aspect-square w-full items-center  justify-center rounded border align-middle text-3xl font-extrabold dark:text-white',
+                `bg-${cellColour}`,
+                {
+                    'dark:border-dark-accent': cellColour == '',
+                    'border-transparent': cellColour != '',
+                }
             )}
             animate={animate}
             variants={variants}>
-            {letter ?? ' '}
+            {letter?.toLocaleUpperCase() ?? ' '}
         </motion.span>
     );
 };

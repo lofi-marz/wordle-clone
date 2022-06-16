@@ -50,7 +50,8 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
             case '{enter}':
                 gameDispatch({ type: 'guess' });
                 //TODO: Only do this sometimes
-                setStoredGameState({ ...gameState, currentGuess: '' });
+                if (gameState.currentGuess == '')
+                    setStoredGameState({ ...gameState, currentGuess: '' });
                 break;
             default:
                 gameDispatch({

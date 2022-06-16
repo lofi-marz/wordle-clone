@@ -15,10 +15,10 @@ const ShareLink = ({ link }: { link: string }): JSX.Element => {
                     e.preventDefault();
                     navigator.clipboard.writeText(link);
                 }}
-                className="h-full bg-blue-400 p-5">
+                className="h-full rounded-l  bg-blue-400 p-5">
                 <FaLink />
             </button>
-            <span className="box-border flex select-all items-center truncate p-5">
+            <span className="box-border flex select-all items-center justify-self-end truncate p-5">
                 {link}
             </span>
         </output>
@@ -57,7 +57,8 @@ const CreateWordle: NextPage = () => {
             <label className="flex w-full items-center justify-between text-left">
                 <input
                     type="text"
-                    className="h-16 w-full rounded border p-5 text-center dark:border-dark-accent dark:bg-dark-primary"
+                    className="h-16 w-full rounded border p-5 text-center text-2xl dark:border-dark-accent dark:bg-white dark:text-black"
+                    placeholder="Word"
                     {...register('word')}
                 />
             </label>
@@ -69,13 +70,13 @@ const CreateWordle: NextPage = () => {
                     min="1"
                     max="8"
                     step="1"
-                    className="h-16 w-16 rounded dark:text-black"
-                    {...register('maxGuesses')}
+                    className="h-16 w-16 rounded text-center dark:text-black"
+                    {...register('maxGuesses', { min: 1, max: 8 })}
                 />
             </label>
 
             <label className="flex w-full items-center justify-between text-left">
-                Allow any word?
+                Allow anything?
                 <input
                     type="checkbox"
                     className="h-16 w-16 rounded"

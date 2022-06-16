@@ -19,7 +19,7 @@
 }
 
 .wordle-state-absent {
-    @apply bg-red-500 !important
+    @apply bg-red-500  !important
 }
 
 
