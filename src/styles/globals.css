@@ -37,6 +37,6 @@
 
 
 .react-simple-keyboard {
-    @apply justify-self-end w-full dark:bg-neutral-900 dark:text-white h-56 flex-shrink-0 !important
+    @apply justify-self-end w-full dark:bg-neutral-900 dark:text-white h-48 flex-shrink-0 !important
 
 }

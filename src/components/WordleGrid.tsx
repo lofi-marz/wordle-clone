@@ -40,7 +40,7 @@ const WordleCell: React.FC<WordleCellProps> = ({
     return (
         <motion.span
             className={classNames(
-                'flex aspect-square w-full items-center  justify-center rounded border align-middle text-3xl font-extrabold dark:text-white',
+                'flex aspect-square w-full items-center justify-center rounded border align-middle text-3xl font-extrabold dark:text-white',
                 `bg-${cellColour}`,
                 {
                     'dark:border-dark-accent': cellColour == '',
@@ -111,7 +111,7 @@ const WordleGrid: React.FC<WordleGridProps> = ({ game }) => {
                 style={{
                     gridTemplateColumns: `repeat(${game.config.word.length}, minmax(0, 1fr))`,
                 }}
-                className="m-auto grid w-5/6 gap-1">
+                className="m-auto grid w-full gap-1 p-5 sm:w-96">
                 {cells}
             </div>
         );

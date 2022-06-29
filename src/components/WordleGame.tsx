@@ -62,8 +62,8 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
     };
 
     return (
-        <div className="flex h-full w-full flex-col items-center justify-between overflow-hidden overflow-hidden md:w-2/3 md:max-w-screen-sm">
-            <div className="flex h-full w-full grow overflow-auto md:p-10">
+        <div className="flex h-full w-full flex-col items-center justify-between overflow-hidden overflow-hidden md:w-1/2 md:max-w-screen-sm">
+            <div className="flex h-full w-full grow overflow-auto">
                 <WordleGrid game={gameState} />
             </div>
             <KeyboardWrapper
