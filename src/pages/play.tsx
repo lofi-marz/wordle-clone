@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { decodeConfigCode } from '../word-encoder';
 import { WordleConfig } from '../wordle';
 import React from 'react';
+import WordleGameContextProvider from '../components/WordleGameContext';
 
 const PlayWordle: NextPage = () => {
     const router = useRouter();
@@ -22,7 +23,11 @@ const PlayWordle: NextPage = () => {
     }
 
     //TODO: Look at how to do a share page
-    return <WordleGame config={config} />;
+    return (
+        <WordleGameContextProvider config={config}>
+            <WordleGame />
+        </WordleGameContextProvider>
+    );
 };
 
 export default PlayWordle;

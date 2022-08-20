@@ -1,33 +1,17 @@
 import React, { useEffect, useReducer } from 'react';
 import WordleGrid from './WordleGrid';
 
-import Wordle, { LetterState, WordleConfig, wordleReducer } from '../wordle';
+import { LetterState, WordleConfig, wordleReducer } from '../wordle';
 import KeyboardWrapper from './KeyboardWrapper';
-import useLocalStorageSync from './useLocalStorageSync';
+import { useWordleGame, useWordleGameDispatch } from './WordleGameContext';
 
 interface WordleGameProps {
     config: WordleConfig;
 }
 
-const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
-    const [storedGameState, setStoredGameState] = useLocalStorageSync<Wordle>(
-        'gameState',
-        null
-    );
-
-    const [gameState, gameDispatch] = useReducer(wordleReducer, {
-        config,
-        guesses: [],
-        currentGuess: '',
-        guessedLetters: new Map<string, LetterState>(),
-        word: config.word,
-    });
-
-    useEffect(() => {
-        if (storedGameState != null)
-            gameDispatch({ type: 'load', payload: storedGameState });
-    }, [storedGameState]);
-
+function WordleGame() {
+    const wordleGame = useWordleGame();
+    const wordleGameDispatch = useWordleGameDispatch();
     const groupLetters = (guessedLetters: Map<string, LetterState>) => {
         const letterStates = new Map<LetterState, string[]>();
         try {
@@ -45,16 +29,16 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
     const onKeyPress = (button: string) => {
         switch (button) {
             case '{bksp}':
-                gameDispatch({ type: 'removeLetter' });
+                wordleGameDispatch({ type: 'removeLetter' });
                 break;
             case '{enter}':
-                gameDispatch({ type: 'guess' });
+                wordleGameDispatch({ type: 'guess' });
                 //TODO: Only do this sometimes
-                if (gameState.currentGuess == '')
-                    setStoredGameState({ ...gameState, currentGuess: '' });
+                // if (wordleGame.currentGuess == '')
+                //TODO: setStoredGameState({ ...gameState, currentGuess: '' });
                 break;
             default:
-                gameDispatch({
+                wordleGameDispatch({
                     type: 'addLetter',
                     payload: button,
                 });
@@ -66,14 +50,14 @@ const WordleGame: React.FC<WordleGameProps> = ({ config }) => {
     return (
         <div className="flex h-full w-full flex-col items-center justify-between overflow-hidden overflow-hidden md:w-1/2 md:max-w-screen-sm">
             <div className="flex h-full w-full grow overflow-auto">
-                <WordleGrid game={gameState} />
+                <WordleGrid game={wordleGame} />
             </div>
             <KeyboardWrapper
-                usedLetters={groupLetters(gameState.guessedLetters)}
+                usedLetters={groupLetters(wordleGame.guessedLetters)}
                 onKeyPress={onKeyPress}
             />
         </div>
     );
-};
+}
 
 export default WordleGame;

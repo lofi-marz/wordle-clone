@@ -20,10 +20,12 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
 
     for (const [state, letters] of usedLetters) {
         if (letters.length == 0) continue;
-        letters.forEach((l) => (leftovers = leftovers.replace(l, '')));
+        letters.forEach(
+            (l) => (leftovers = leftovers.replace(l.toLocaleUpperCase(), ''))
+        );
         buttonTheme.push({
             class: `wordle-state-${state}`,
-            buttons: letters.join(' '),
+            buttons: letters.join(' ').toLocaleUpperCase(),
         });
     }
 
@@ -31,6 +33,7 @@ const KeyboardWrapper: React.FC<KeyboardWrapperProps> = ({
         class: 'wordle-state-empty',
         buttons: `${leftovers} {bksp} {enter}`,
     });
+    console.log('Button theme:', buttonTheme);
     return (
         <Keyboard
             buttonTheme={buttonTheme}

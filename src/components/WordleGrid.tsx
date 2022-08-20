@@ -1,5 +1,5 @@
 import React from 'react';
-import Wordle, { letterScore, LetterState, LetterStateMap } from '../wordle';
+import { letterScore, LetterState, LetterStateMap, Wordle } from '../wordle';
 import classNames from 'classnames';
 import { motion, Variants } from 'framer-motion';
 
@@ -22,7 +22,7 @@ const WordleCell: React.FC<WordleCellProps> = ({
         present: 'wordle-state-present',
         empty: '',
     };
-
+    //TODO: Animate color
     const variants: Variants = {
         lastTyped: { scale: [1, 1.1, 1], transition: { duration: 0.3 } },
         notEmpty: {

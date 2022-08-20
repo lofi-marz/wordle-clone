@@ -104,7 +104,7 @@ export type LetterStateMap<T> = {
     [k in LetterState]: T;
 };
 
-export default interface Wordle {
+export interface Wordle {
     config: WordleConfig;
     guesses: string[];
     currentGuess: string;
