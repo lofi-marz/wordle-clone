@@ -17,21 +17,20 @@ const WordleCell: React.FC<WordleCellProps> = ({
     column,
 }) => {
     const colours: LetterStateMap<string> = {
-        absent: 'red-500',
-        correct: 'green-500',
-        present: 'yellow-500',
+        absent: 'wordle-state-absent',
+        correct: 'wordle-state-correct',
+        present: 'wordle-state-present',
         empty: '',
     };
 
     const variants: Variants = {
-        lastTyped: { scale: [1, 1.1, 1], transition: { duration: 0.5 } },
+        lastTyped: { scale: [1, 1.1, 1], transition: { duration: 0.3 } },
         notEmpty: {
             scaleX: [1, 0, 1],
             transition: { duration: 0.5, delay: (column ?? 0) * 0.2 },
         },
     };
 
-    const cellColour = colours[state];
     let animate = '';
 
     animate += lastTyped ? 'lastTyped' : '';
@@ -41,10 +40,10 @@ const WordleCell: React.FC<WordleCellProps> = ({
         <motion.span
             className={classNames(
                 'flex aspect-square w-full items-center justify-center rounded border align-middle text-3xl font-extrabold dark:text-white',
-                `bg-${cellColour}`,
+                colours[state],
                 {
-                    'dark:border-dark-accent': cellColour == '',
-                    'border-transparent': cellColour != '',
+                    'dark:border-dark-accent': colours[state] == '',
+                    'border-transparent': colours[state] != '',
                 }
             )}
             animate={animate}

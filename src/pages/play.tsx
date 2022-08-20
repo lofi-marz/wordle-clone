@@ -25,8 +25,4 @@ const PlayWordle: NextPage = () => {
     return <WordleGame config={config} />;
 };
 
-PlayWordle.getInitialProps = async ({ req }) => {
-    return {};
-};
-
 export default PlayWordle;
