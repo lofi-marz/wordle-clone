@@ -1,4 +1,4 @@
-import { Dispatch, useContext, useReducer } from 'react';
+import { Dispatch, useContext, useEffect, useReducer } from 'react';
 import {
     Wordle,
     LetterState,
@@ -9,6 +9,7 @@ import {
 
 import { createContext } from 'react';
 import { WithChildrenProps } from 'types';
+import { useLocalGameState } from '../hooks/useLocalGameState';
 
 export const WordleGameContext = createContext<Wordle | null>(null);
 export const WordleGameDispatchContext =
@@ -24,15 +25,26 @@ export function useWordleGameDispatch() {
 
 function WordleGameContextProvider({
     config,
+    initialState,
     children,
-}: { config: WordleConfig } & WithChildrenProps) {
-    const [gameState, gameDispatch] = useReducer(wordleReducer, {
-        config,
-        guesses: [],
-        currentGuess: '',
-        guessedLetters: new Map<string, LetterState>(),
-        word: config.word,
-    });
+}: { config: WordleConfig; initialState: Wordle | null } & WithChildrenProps) {
+    const [localGameState] = useLocalGameState();
+    const [gameState, gameDispatch] = useReducer(
+        wordleReducer,
+        initialState ?? {
+            config,
+            guesses: [],
+            currentGuess: '',
+            guessedLetters: {},
+            word: config.word,
+        }
+    );
+    console.log('Initial state:', initialState, 'Game state:', gameState);
+    useEffect(() => {
+        if (localGameState)
+            gameDispatch({ type: 'load', payload: localGameState });
+    }, [localGameState]);
+
     return (
         <WordleGameContext.Provider value={gameState}>
             <WordleGameDispatchContext.Provider value={gameDispatch}>

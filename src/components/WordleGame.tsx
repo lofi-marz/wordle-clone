@@ -4,6 +4,7 @@ import WordleGrid from './WordleGrid';
 import { LetterState, WordleConfig, wordleReducer } from '../wordle';
 import KeyboardWrapper from './KeyboardWrapper';
 import { useWordleGame, useWordleGameDispatch } from './WordleGameContext';
+import { useLocalGameState } from '../hooks/useLocalGameState';
 
 interface WordleGameProps {
     config: WordleConfig;
@@ -12,10 +13,11 @@ interface WordleGameProps {
 function WordleGame() {
     const wordleGame = useWordleGame();
     const wordleGameDispatch = useWordleGameDispatch();
-    const groupLetters = (guessedLetters: Map<string, LetterState>) => {
+    const [, updateLocalGameState] = useLocalGameState();
+    const groupLetters = (guessedLetters: Record<string, LetterState>) => {
         const letterStates = new Map<LetterState, string[]>();
         try {
-            for (const [letter, state] of guessedLetters) {
+            for (const [letter, state] of Object.entries(guessedLetters)) {
                 const oldState = letterStates.get(state) ?? [];
                 letterStates.set(state, [...oldState, letter]);
             }
@@ -34,8 +36,9 @@ function WordleGame() {
             case '{enter}':
                 wordleGameDispatch({ type: 'guess' });
                 //TODO: Only do this sometimes
-                // if (wordleGame.currentGuess == '')
-                //TODO: setStoredGameState({ ...gameState, currentGuess: '' });
+                if (wordleGame.currentGuess == '')
+                    updateLocalGameState(wordleGame);
+
                 break;
             default:
                 wordleGameDispatch({

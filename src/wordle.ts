@@ -9,10 +9,9 @@ export type WordleConfig = {
 export type LetterState = 'empty' | 'absent' | 'present' | 'correct';
 
 export type WordleActionType = 'load' | 'guess' | 'removeLetter' | 'addLetter';
-
 export type WordleAction =
     | {
-          type: WordleActionType;
+          type: 'guess' | 'removeLetter' | 'addLetter';
           payload?: string;
       }
     | { type: 'load'; payload: Wordle };
@@ -23,8 +22,7 @@ export function wordleReducer(state: Wordle, action: WordleAction): Wordle {
     switch (action.type) {
         case 'load':
             return {
-                ...(<Wordle>action.payload),
-                guessedLetters: new Map<string, LetterState>(),
+                ...action.payload,
             };
         case 'addLetter':
             return addLetter(state, action.payload?.toLocaleLowerCase() ?? ' ');
@@ -74,7 +72,7 @@ function submitGuess(state: Wordle): Wordle {
     const newUsedLetters = state.guessedLetters;
     for (let i = 0; i < guess.length; i++) {
         const l = guess[i];
-        newUsedLetters.set(l, letterScore(state.word, l, i));
+        newUsedLetters[l] = letterScore(state.word, l, i);
     }
 
     return {
@@ -108,6 +106,6 @@ export interface Wordle {
     config: WordleConfig;
     guesses: string[];
     currentGuess: string;
-    guessedLetters: Map<string, LetterState>;
+    guessedLetters: Record<string, LetterState>;
     word: string;
 }

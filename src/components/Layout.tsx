@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
-import useWindowDimensions from './useWindowDimensions';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { WithChildrenProps } from '../types';
