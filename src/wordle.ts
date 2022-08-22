@@ -9,11 +9,16 @@ export type WordleConfig = {
 export type LetterState = 'empty' | 'absent' | 'present' | 'correct';
 
 export type WordleActionType = 'load' | 'guess' | 'removeLetter' | 'addLetter';
+
 export type WordleAction =
     | {
-          type: 'guess' | 'removeLetter' | 'addLetter';
-          payload?: string;
-      }
+    type: 'guess' | 'removeLetter';
+    payload?: string;
+}
+    | {
+    type: 'addLetter';
+    payload: string;
+}
     | { type: 'load'; payload: Wordle };
 
 export function wordleReducer(state: Wordle, action: WordleAction): Wordle {
@@ -25,7 +30,7 @@ export function wordleReducer(state: Wordle, action: WordleAction): Wordle {
                 ...action.payload,
             };
         case 'addLetter':
-            return addLetter(state, action.payload?.toLocaleLowerCase() ?? ' ');
+            return addLetter(state, action.payload.toLocaleLowerCase() ?? ' ');
         case 'removeLetter':
             return removeLetter(state);
         case 'guess':
@@ -86,7 +91,7 @@ function submitGuess(state: Wordle): Wordle {
 export function letterScore(
     correctWord: string,
     letter: string,
-    pos: number
+    pos: number,
 ): LetterState {
     //console.log(`${letter} ${correctWord[pos]} ${pos}`);
     if (letter == correctWord[pos]) {
