@@ -21,18 +21,18 @@ function WordleGame() {
     const [, updateLocalGameState] = useLocalGameState();
 
     useKeyPress((key) => {
-        let wordleInput = '';
+        let wordleInput = null;
         switch (key) {
             case 'Enter':
                 wordleInput = '{enter}';
                 break;
             case 'Backspace':
-                wordleInput = '{backspace}';
+                wordleInput = '{bksp}';
                 break;
             default:
                 if (isLetter(key)) wordleInput = key;
         }
-        onKeyPress(wordleInput);
+        if (wordleInput) onKeyPress(wordleInput);
     });
 
     const groupLetters = (guessedLetters: Record<string, LetterState>) => {
