@@ -2,8 +2,8 @@ import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { FaLink } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import { WordleConfig } from '../wordle';
-import { generateConfigCode } from '../word-encoder';
+import { WordleConfig } from '../wordle/wordle';
+import { generateConfigCode } from '../word-encoder/word-encoder';
 
 type FormData = WordleConfig;
 

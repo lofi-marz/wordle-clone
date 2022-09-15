@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Wordle } from '../wordle';
+import { Wordle } from '../wordle/wordle';
 
 export function useLocalGameState() {
     const [localGameState, setGameState] = useState<Wordle | null>(null);

@@ -1,13 +1,16 @@
-import { Dispatch, useContext, useEffect, useReducer } from 'react';
+import {
+    createContext,
+    Dispatch,
+    useContext,
+    useEffect,
+    useReducer,
+} from 'react';
 import {
     Wordle,
-    LetterState,
     WordleAction,
-    wordleReducer,
     WordleConfig,
-} from '../wordle';
-
-import { createContext } from 'react';
+    wordleReducer,
+} from '../wordle/wordle';
 import { WithChildrenProps } from 'types';
 import { useLocalGameState } from '../hooks/useLocalGameState';
 

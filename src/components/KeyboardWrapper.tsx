@@ -1,5 +1,5 @@
 import React from 'react';
-import { LetterState } from '../wordle';
+import { LetterState } from '../wordle/wordle';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 

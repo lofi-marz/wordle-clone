@@ -1,4 +1,4 @@
-import validWordList from './words.json';
+import validWordList from '../words.json';
 
 export type WordleConfig = {
     maxGuesses: number;
@@ -12,13 +12,13 @@ export type WordleActionType = 'load' | 'guess' | 'removeLetter' | 'addLetter';
 
 export type WordleAction =
     | {
-    type: 'guess' | 'removeLetter';
-    payload?: string;
-}
+          type: 'guess' | 'removeLetter';
+          payload?: string;
+      }
     | {
-    type: 'addLetter';
-    payload: string;
-}
+          type: 'addLetter';
+          payload: string;
+      }
     | { type: 'load'; payload: Wordle };
 
 export function wordleReducer(state: Wordle, action: WordleAction): Wordle {
@@ -91,7 +91,7 @@ function submitGuess(state: Wordle): Wordle {
 export function letterScore(
     correctWord: string,
     letter: string,
-    pos: number,
+    pos: number
 ): LetterState {
     //console.log(`${letter} ${correctWord[pos]} ${pos}`);
     if (letter == correctWord[pos]) {

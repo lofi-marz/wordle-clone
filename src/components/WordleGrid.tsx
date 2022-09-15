@@ -1,5 +1,10 @@
 import React from 'react';
-import { letterScore, LetterState, LetterStateMap, Wordle } from '../wordle';
+import {
+    letterScore,
+    LetterState,
+    LetterStateMap,
+    Wordle,
+} from '../wordle/wordle';
 import classNames from 'classnames';
 import { motion, Variants } from 'framer-motion';
 

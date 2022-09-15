@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
 import WordleGame from '../components/WordleGame';
 import { useRouter } from 'next/router';
-import { decodeConfigCode } from '../word-encoder';
-import { WordleConfig } from '../wordle';
-import React, { useEffect } from 'react';
+import { decodeConfigCode } from '../word-encoder/word-encoder';
+import { WordleConfig } from '../wordle/wordle';
+import React from 'react';
 import WordleGameContextProvider from '../components/WordleGameContext';
 import { useLocalGameState } from '../hooks/useLocalGameState';
 

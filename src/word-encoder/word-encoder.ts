@@ -1,4 +1,4 @@
-import { WordleConfig } from './wordle';
+import { WordleConfig } from '../wordle/wordle';
 
 //Idk bored
 
@@ -20,7 +20,7 @@ class Encoder {
     }
 }
 
-function encodeWord(word: string): string {
+export function encodeWord(word: string): string {
     if (word == '') return '';
     let encodedWord = '';
     for (let i = 0; i < word.length; i++) {
@@ -36,7 +36,7 @@ function shift(charCode: number, rightShift: number): number {
     return (charCode + rightShift) % 26;
 }
 
-function decodeWord(encodedWord: string) {
+export function decodeWord(encodedWord: string) {
     let decodedWord = '';
     for (let i = 0; i < encodedWord.length; i++) {
         const hex = parseInt(encodedWord[i], 26);

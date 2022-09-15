@@ -1,7 +1,7 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
 import WordleGrid from './WordleGrid';
 
-import { LetterState, WordleConfig, wordleReducer } from '../wordle';
+import { LetterState, WordleConfig } from '../wordle/wordle';
 import KeyboardWrapper from './KeyboardWrapper';
 import { useWordleGame, useWordleGameDispatch } from './WordleGameContext';
 import { useLocalGameState } from '../hooks/useLocalGameState';
