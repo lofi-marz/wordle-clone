@@ -5,15 +5,36 @@ import { LetterState, WordleConfig } from '../wordle/wordle';
 import KeyboardWrapper from './KeyboardWrapper';
 import { useWordleGame, useWordleGameDispatch } from './WordleGameContext';
 import { useLocalGameState } from '../hooks/useLocalGameState';
+import { useKeyPress } from '../hooks/useKeyPress';
 
 interface WordleGameProps {
     config: WordleConfig;
+}
+
+function isLetter(str: string) {
+    return str.length === 1 && str.match(/[a-z]/i);
 }
 
 function WordleGame() {
     const wordleGame = useWordleGame();
     const wordleGameDispatch = useWordleGameDispatch();
     const [, updateLocalGameState] = useLocalGameState();
+
+    useKeyPress((key) => {
+        let wordleInput = null;
+        switch (key) {
+            case 'Enter':
+                wordleInput = '{enter}';
+                break;
+            case 'Backspace':
+                wordleInput = '{bksp}';
+                break;
+            default:
+                if (isLetter(key)) wordleInput = key;
+        }
+        if (wordleInput) onKeyPress(wordleInput);
+    });
+
     const groupLetters = (guessedLetters: Record<string, LetterState>) => {
         const letterStates = new Map<LetterState, string[]>();
         try {
